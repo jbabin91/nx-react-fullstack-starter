@@ -46,5 +46,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": []
+  "tags": ["backend"]
 }
