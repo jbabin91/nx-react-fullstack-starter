@@ -4,11 +4,21 @@
  */
 import * as path from 'node:path';
 
+import { appRouter, createContext } from '@repo/api';
+import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import express from 'express';
 
 const app = express();
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+app.use(
+  '/trpc',
+  createExpressMiddleware({
+    createContext,
+    router: appRouter,
+  }),
+);
 
 app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to backend!' });
