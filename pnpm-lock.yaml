@@ -39,11 +39,11 @@ dependencies:
     specifier: ^5.17.18
     version: 5.17.18(@tanstack/react-query@5.17.15)(react@18.2.0)
   '@tanstack/react-router':
-    specifier: ^1.5.7
-    version: 1.5.7(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.5.9
+    version: 1.5.9(react-dom@18.2.0)(react@18.2.0)
   '@tanstack/router-devtools':
-    specifier: ^1.5.7
-    version: 1.5.7(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.5.9
+    version: 1.5.9(react-dom@18.2.0)(react@18.2.0)
   '@trpc/client':
     specifier: 11.0.0-next-beta.193
     version: 11.0.0-next-beta.193
@@ -167,8 +167,8 @@ devDependencies:
     specifier: ~1.3.104
     version: 1.3.104(@swc/helpers@0.5.3)
   '@tanstack/router-vite-plugin':
-    specifier: ^1.5.7
-    version: 1.5.7
+    specifier: ^1.5.9
+    version: 1.5.9
   '@testing-library/react':
     specifier: 14.1.2
     version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -4712,8 +4712,8 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@tanstack/history@1.5.7:
-    resolution: {integrity: sha512-YBlDjkWN3Gmjx2nszA5YitRQ2LcV+A3nBmXX+GPWPILc3bef3YIms19KBvlf2SyGQY0nDwTi5wTzSP8x+NUtjQ==}
+  /@tanstack/history@1.5.9:
+    resolution: {integrity: sha512-GTQJrSI6+L+viUW88S/j6sZau79I3IpafcVLhuT8wo98XORjUS0LF8dZ2jMAwwqwXXDJIXUPs6k5B8OD8w/MfQ==}
     engines: {node: '>=12'}
     dev: false
 
@@ -4745,15 +4745,15 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@tanstack/react-router@1.5.7(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-czlQ0I8Go7ZME5RcezS38rpnYEiS2y3LVMRMQNPogLoA1fgAOpEiQrC6826Dj+1N5R+/xWNChnoMfN8eLStzbw==}
+  /@tanstack/react-router@1.5.9(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-zDT+4pkM+4dYkq+fGI9u3xq0DOknk6iedlj2IHyZjEAy5T384zEaVVwaoEeRFgpWHRrek9Nll/mvLJBeAreUZQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
       '@babel/runtime': 7.23.8
-      '@tanstack/history': 1.5.7
+      '@tanstack/history': 1.5.9
       '@tanstack/react-store': 0.2.1(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/store': 0.1.3
       react: 18.2.0
@@ -4774,33 +4774,33 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/router-devtools@1.5.7(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1QZZ5QrhUx8TA8vF3buRDZHkmolWdQu8G+BKV63w0pWZk/2lg6I9HmxFoPQNvaT5rDfs1E5xMkZlAXEglr0T9A==}
+  /@tanstack/router-devtools@1.5.9(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-doOdKiE9xPqAN4sFfrexj9Vp5f69mkmeG2UUtG/v4oPHetDO04MP2nUv1krDSBFzz92MANyvaoH7C9CkDrGLtQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
       '@babel/runtime': 7.23.8
-      '@tanstack/react-router': 1.5.7(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-router': 1.5.9(react-dom@18.2.0)(react@18.2.0)
       date-fns: 2.30.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/router-generator@1.5.7:
-    resolution: {integrity: sha512-KK2arQK1OLv1j7CNRqUn+D6w8B1nHlY5v1BVqh3+u7ORreuXnS92hlsk/8dyEtp9O1nv5UwttQQM+Mvd+y900g==}
+  /@tanstack/router-generator@1.5.9:
+    resolution: {integrity: sha512-VggQwcK5lqunKOLyN49zhIzgQGdZKB5QVRP1WWY4MR+x5UEjP3zrmRIhp5BKSmlMTxRmYqEgcjBmhQ1MDY8O2g==}
     engines: {node: '>=12'}
     dependencies:
       prettier: 3.2.4
       zod: 3.22.4
     dev: true
 
-  /@tanstack/router-vite-plugin@1.5.7:
-    resolution: {integrity: sha512-abk+EUsPHjQC83mLcyAGX4TbEcKQfU6lpY4Y3Ekd2L+fDP/U+NfaJ7TYyUpaMVIIF5HxXU8zpwLF1nrlvQN7Xw==}
+  /@tanstack/router-vite-plugin@1.5.9:
+    resolution: {integrity: sha512-miPuRv6+9YGEVQYAQihrLJDItA+coRlteVgFpiHVnFmBe68ayK71HINPEwIPVspIbmv8uFKgRhewymuIrKJHWg==}
     engines: {node: '>=12'}
     dependencies:
-      '@tanstack/router-generator': 1.5.7
+      '@tanstack/router-generator': 1.5.9
     dev: true
 
   /@tanstack/store@0.1.3:
@@ -6393,7 +6393,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001579
-      electron-to-chromium: 1.4.637
+      electron-to-chromium: 1.4.638
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
     dev: true
@@ -7276,8 +7276,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.637:
-    resolution: {integrity: sha512-G7j3UCOukFtxVO1vWrPQUoDk3kL70mtvjc/DC/k2o7lE0wAdq+Vwp1ipagOow+BH0uVztFysLWbkM/RTIrbK3w==}
+  /electron-to-chromium@1.4.638:
+    resolution: {integrity: sha512-gpmbAG2LbfPKcDaL5m9IKutKjUx4ZRkvGNkgL/8nKqxkXsBVYykVULboWlqCrHsh3razucgDJDuKoWJmGPdItA==}
     dev: true
 
   /emittery@0.13.1:
