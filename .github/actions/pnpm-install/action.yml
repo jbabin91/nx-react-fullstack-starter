@@ -1,0 +1,34 @@
+name: PNPM Install
+description: Setup pnpm, node, and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Setup PNPM
+      uses: pnpm/action-setup@v2.4.0
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+    - name: Get PNPM store directory
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+    - name: Setup PNPM cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+    - name: Setup NODE_MODULES cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-key: |
+          ${{ runner.os }}-node_modules-
+    - name: Install deps (with cache)
+      shell: bash
+      run: pnpm install

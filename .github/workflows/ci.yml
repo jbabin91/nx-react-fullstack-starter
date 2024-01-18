@@ -1,0 +1,17 @@
+name: CI (Continuous Integration)
+
+on:
+  push:
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        uses: ./.github/actions/pnpm-install
+      - name: Branch Checks
+        uses: ./.github/actions/branch-checks
+      - name: Build Apps and Libs
+        uses: ./.github/actions/build-apps
