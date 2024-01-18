@@ -1,0 +1,10 @@
+name: Build Apps
+description: Action to build Apps and libs
+
+runs:
+  using: composite
+  steps:
+    - name: Build apps and libs
+      shell: bash
+      run: |
+        pnpm build --skip-nx-cache
