@@ -2,7 +2,7 @@ import type { User } from '@repo/db';
 import type { SignOptions } from 'jsonwebtoken';
 import { sign, verify } from 'jsonwebtoken';
 
-import { envConfig } from '../config';
+import { env } from '../config';
 
 /**
  * Signs a JWT token for the given user.
@@ -17,20 +17,22 @@ async function signTokens({
 }): Promise<{ access_token: string; refresh_token: string }> {
   const userId = user.id;
 
+  // key: 'accessTokenPrivateKey',
   // Sign the access token
   const access_token = signJwt({
-    key: 'accessTokenPrivateKey',
+    key: 'ACCESS_TOKEN_PRIVATE_KEY',
     options: {
-      expiresIn: `${envConfig.accessTokenExpiresIn}m`,
+      expiresIn: `${env.ACCESS_TOKEN_EXPIRES_IN}m`,
     },
     payload: { sub: userId },
   });
 
+  // key: 'refreshTokenPrivateKey',
   // Sign the refresh token
   const refresh_token = signJwt({
-    key: 'refreshTokenPrivateKey',
+    key: 'REFRESH_TOKEN_PRIVATE_KEY',
     options: {
-      expiresIn: `${envConfig.refreshTokenExpiresIn}m`,
+      expiresIn: `${env.REFRESH_TOKEN_EXPIRES_IN}m`,
     },
     payload: { sub: userId },
   });
@@ -44,17 +46,18 @@ async function signTokens({
   };
 }
 
+// key: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey';
 function signJwt({
   payload,
   key,
   options = {},
 }: {
   payload: object;
-  key: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey';
+  key: 'ACCESS_TOKEN_PRIVATE_KEY' | 'REFRESH_TOKEN_PRIVATE_KEY';
   options: SignOptions;
 }) {
   try {
-    const privateKey = Buffer.from(envConfig[key], 'base64').toString('ascii');
+    const privateKey = Buffer.from(env[key], 'base64').toString('ascii');
     return sign(payload, privateKey, {
       ...(options && options),
       algorithm: 'RS256',
@@ -65,15 +68,16 @@ function signJwt({
   }
 }
 
+// key: 'accessTokenPublicKey' | 'refreshTokenPublicKey';
 function verifyJwt<T>({
   token,
   key,
 }: {
   token: string;
-  key: 'accessTokenPublicKey' | 'refreshTokenPublicKey';
+  key: 'ACCESS_TOKEN_PUBLIC_KEY' | 'REFRESH_TOKEN_PUBLIC_KEY';
 }): T | null {
   try {
-    const publicKey = Buffer.from(envConfig[key], 'base64').toString('ascii');
+    const publicKey = Buffer.from(env[key], 'base64').toString('ascii');
     return verify(token, publicKey) as T;
   } catch (error) {
     console.error(error);
@@ -88,7 +92,7 @@ function verifyJwt<T>({
  * @returns The generated access token.
  */
 function generateAccessToken(user: User): string {
-  return sign({ userId: user.id }, envConfig['jwtAccessSecret'], {
+  return sign({ userId: user.id }, env.JWT_ACCESS_SECRET, {
     expiresIn: '5m', // Usually I keep the token between 5 minutes - 15 minutes
   });
 }
@@ -103,7 +107,7 @@ function generateRefreshToken(user: User, jti: string): string {
       jti,
       userId: user.id,
     },
-    envConfig['jwtRefreshSecret'],
+    env.JWT_REFRESH_SECRET,
     {
       expiresIn: '8h',
     },

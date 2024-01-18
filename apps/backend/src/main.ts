@@ -11,13 +11,13 @@ import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 
-import { envConfig } from './config';
+import { env } from './config';
 
-const port = envConfig.port;
-const origin = envConfig.origin || `http://localhost:${port}`;
+const port = env.PORT;
+const origin = env.ORIGIN || `http://localhost:${port}`;
 
 const app = express();
-if (envConfig.env !== 'production') app.use(morgan('dev'));
+if (env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
 app.use(cookieParser());
 app.use(

@@ -1,29 +1,43 @@
+import { createId } from '@paralleldrive/cuid2';
 import { Prisma } from '@prisma/client';
-import { comparePasswords, signJwt, signTokens, verifyJwt } from '@repo/auth';
+import {
+  comparePasswords,
+  generateTokens,
+  signJwt,
+  signTokens,
+  verifyJwt,
+} from '@repo/auth';
 import type { CreateUser, LoginInput } from '@repo/db';
 import { TRPCError } from '@trpc/server';
 import type { CookieOptions } from 'express';
+import * as jwt from 'jsonwebtoken';
 
-import { envConfig } from '../config';
+import { env } from '../config';
+import { prisma } from '../lib/prisma-client';
 import { redisClient } from '../lib/redis-client';
+import {
+  addRefreshTokenToWhitelist,
+  deleteRefreshToken,
+  findRefreshTokenById,
+} from '../services/auth.db';
 import { createUser, findUserByEmail, findUserById } from '../services/user.db';
 import type { Context } from '../trpc/context';
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
   sameSite: 'lax',
-  secure: envConfig.env === 'production',
+  secure: env.NODE_ENV === 'production',
 };
 
 // Cookie Options
 const accessTokenCookieOptions = {
   ...cookieOptions,
-  expires: new Date(Date.now() + envConfig.accessTokenExpiresIn * 60 * 1000),
+  expires: new Date(Date.now() + env.ACCESS_TOKEN_EXPIRES_IN * 60 * 1000),
 };
 
 const refreshTokenCookieOptions = {
   ...cookieOptions,
-  expires: new Date(Date.now() + envConfig.refreshTokenExpiresIn * 60 * 1000),
+  expires: new Date(Date.now() + env.REFRESH_TOKEN_EXPIRES_IN * 60 * 1000),
 };
 
 // Register User
@@ -120,9 +134,10 @@ async function refreshAccessTokenHandler({ ctx }: { ctx: Context }) {
       throw new TRPCError({ code: 'FORBIDDEN', message });
     }
 
+    // key: 'refreshTokenPublicKey',
     // Validate the Refresh token
     const decoded = verifyJwt<{ sub: string }>({
-      key: 'refreshTokenPublicKey',
+      key: 'REFRESH_TOKEN_PUBLIC_KEY',
       token: refresh_token,
     });
 
@@ -143,11 +158,12 @@ async function refreshAccessTokenHandler({ ctx }: { ctx: Context }) {
       throw new TRPCError({ code: 'FORBIDDEN', message });
     }
 
+    // key: 'accessTokenPrivateKey',
     // Sign new access token
     const access_token = signJwt({
-      key: 'accessTokenPrivateKey',
+      key: 'ACCESS_TOKEN_PRIVATE_KEY',
       options: {
-        expiresIn: `${envConfig.accessTokenExpiresIn}m`,
+        expiresIn: `${env.ACCESS_TOKEN_EXPIRES_IN}m`,
       },
       payload: { sub: user.id },
     });
@@ -202,3 +218,153 @@ export {
   refreshAccessTokenHandler,
   registerHandler,
 };
+
+////////////////////////////////
+////////// OLD HANDLERS ////////
+////////////////////////////////
+
+export async function loginUser({
+  data,
+}: {
+  data: LoginInput;
+}): Promise<{ accessToken: string; refreshToken: string }> {
+  const { email, password } = data;
+
+  if (!email || !password) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+    });
+  }
+
+  const existingUser = await findUserByEmail({ email });
+  if (!existingUser) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Invalid login credentials.',
+    });
+  }
+
+  const validPassword = comparePasswords({
+    hashedPassword: existingUser?.password ?? '',
+    password,
+  });
+  if (!validPassword) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Invalid login credentials.',
+    });
+  }
+
+  const jti = createId();
+  const { accessToken, refreshToken } = generateTokens(existingUser, jti);
+  await addRefreshTokenToWhitelist({
+    jti,
+    refreshToken,
+    userId: existingUser.id,
+  });
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+}
+
+export async function registerUser({
+  data,
+}: {
+  data: CreateUser;
+}): Promise<{ accessToken: string; refreshToken: string }> {
+  const { email, password } = data;
+
+  if (!email || !password) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+    });
+  }
+
+  const existingUser = await findUserByEmail({ email });
+
+  if (existingUser) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+    });
+  }
+
+  const user = await createUser(data);
+  const jti = createId();
+  const { accessToken, refreshToken } = generateTokens(user, jti);
+  await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+}
+
+export async function refreshToken({
+  refreshToken,
+}: {
+  refreshToken: string;
+}): Promise<{ accessToken: string; refreshToken: string }> {
+  if (!refreshToken) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+    });
+  }
+
+  const payload = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET) as {
+    jti: string;
+    userId: string;
+    refreshToken: string;
+  };
+  const savedRefreshToken = await findRefreshTokenById({ id: payload.jti });
+
+  if (!savedRefreshToken || savedRefreshToken.revoked === true) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    });
+  }
+
+  const user = await findUserById(payload.userId);
+  if (!user) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    });
+  }
+
+  await deleteRefreshToken({ id: savedRefreshToken.id });
+  const jti = createId();
+  const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+    user,
+    jti,
+  );
+  await addRefreshTokenToWhitelist({
+    jti,
+    refreshToken: newRefreshToken,
+    userId: user.id,
+  });
+
+  return {
+    accessToken,
+    refreshToken: newRefreshToken,
+  };
+}
+
+export async function revokeTokens({
+  userId,
+}: {
+  userId: string;
+}): Promise<{ message: string }> {
+  await prisma.refreshToken.updateMany({
+    data: {
+      revoked: true,
+    },
+    where: {
+      userId,
+    },
+  });
+
+  return {
+    message: `Tokens revoked for user with id #${userId}`,
+  };
+}

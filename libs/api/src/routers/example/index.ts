@@ -13,10 +13,6 @@ export const exampleRouter = router({
     };
   }),
   sayHello: publicProcedure.query(async () => {
-    // await redisClient.set(
-    //   'tRPC',
-    //   '??Welcome to tRPC with React.js, Express and Typescript!',
-    // );
     const message = await redisClient.get('tRPC');
     return { message };
   }),

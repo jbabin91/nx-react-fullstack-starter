@@ -1,23 +1,20 @@
-export const envConfig: {
-  accessTokenExpiresIn: number;
-  refreshTokenExpiresIn: number;
-  accessTokenPrivateKey: string;
-  accessTokenPublicKey: string;
-  refreshTokenPrivateKey: string;
-  refreshTokenPublicKey: string;
-  jwtAccessSecret: string;
-  jwtRefreshSecret: string;
-  env: 'development' | 'test' | 'production';
-} = {
-  accessTokenExpiresIn: 15,
-  accessTokenPrivateKey: import.meta.env['ACCESS_TOKEN_PRIVATE_KEY'] as string,
-  accessTokenPublicKey: import.meta.env['ACCESS_TOKEN_PUBLIC_KEY'] as string,
-  env: import.meta.env['NODE_ENV'] as 'development' | 'test' | 'production',
-  jwtAccessSecret: import.meta.env['JWT_ACCESS_SECRET'] as string,
-  jwtRefreshSecret: import.meta.env['JWT_REFRESH_SECRET'] as string,
-  refreshTokenExpiresIn: 60,
-  refreshTokenPrivateKey: import.meta.env[
-    'REFRESH_TOKEN_PRIVATE_KEY'
-  ] as string,
-  refreshTokenPublicKey: import.meta.env['REFRESH_TOKEN_PUBLIC_KEY'] as string,
-};
+import { cleanEnv, num, str } from 'envalid';
+
+export const env = cleanEnv(process.env, {
+  ACCESS_TOKEN_EXPIRES_IN: num({
+    default: 15,
+  }),
+  ACCESS_TOKEN_PRIVATE_KEY: str(),
+  ACCESS_TOKEN_PUBLIC_KEY: str(),
+  JWT_ACCESS_SECRET: str(),
+  JWT_REFRESH_SECRET: str(),
+  NODE_ENV: str({
+    choices: ['development', 'test', 'production', 'staging'],
+    default: 'development',
+  }),
+  REFRESH_TOKEN_EXPIRES_IN: num({
+    default: 60,
+  }),
+  REFRESH_TOKEN_PRIVATE_KEY: str(),
+  REFRESH_TOKEN_PUBLIC_KEY: str(),
+});

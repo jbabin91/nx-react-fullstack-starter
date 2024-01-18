@@ -16,7 +16,6 @@ const connectRedis = async () => {
     );
   } catch (error: any) {
     console.log(error.message);
-    // exit(1);
   }
 };
 
