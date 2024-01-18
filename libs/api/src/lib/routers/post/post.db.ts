@@ -1,13 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-
-import {
-  type CreatePost,
-  createPostSchema,
-  type Post,
-  type Posts,
-  type UpdatePost,
-  updatePostSchema,
-} from '../../../schemas/posts';
+import type { CreatePost, Post, Posts, UpdatePost } from '@repo/db';
+import { createPostSchema, updatePostSchema } from '@repo/db';
 
 const prisma = new PrismaClient();
 

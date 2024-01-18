@@ -1,6 +1,6 @@
+import { createPostSchema, updatePostSchema } from '@repo/db';
 import { z } from 'zod';
 
-import { createPostSchema, updatePostSchema } from '../../../schemas/posts';
 import { publicProcedure, router } from '../../trpc';
 import {
   createPost,
