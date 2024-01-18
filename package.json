@@ -6,11 +6,16 @@
   "scripts": {
     "build": "nx run-many -t build",
     "dev": "nx run-many -t serve",
+    "e2e": "nx run-many -t e2e",
+    "e2e:ui": "nx run-many -t e2e -- --ui",
     "format": "prettier -uw --cache .",
     "format:check": "prettier -uc --cache .",
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint -- --fix",
-    "prepare": "is-ci || husky install"
+    "prepare": "is-ci || husky install",
+    "test": "nx run-many -t test",
+    "test:coverage": "nx run-many -t test -- --coverage",
+    "test:ui": "nx run-many -t test -- --ui --watch"
   },
   "lint-staged": {
     "*": [
