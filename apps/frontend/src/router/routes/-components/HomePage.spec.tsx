@@ -1,15 +1,15 @@
 import { render } from '@testing-library/react';
 
-import { WelcomePage } from './WelcomePage';
+import { HomePage } from './HomePage';
 
-describe('WelcomePage', () => {
+describe('HomePage', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<WelcomePage />);
+    const { baseElement } = render(<HomePage />);
     expect(baseElement).toBeTruthy();
   });
 
   it('should have a greeting as the title', () => {
-    const { getByText } = render(<WelcomePage />);
+    const { getByText } = render(<HomePage />);
     expect(getByText(/hello world!/i)).toBeTruthy();
   });
 });

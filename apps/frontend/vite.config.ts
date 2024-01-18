@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 
@@ -20,7 +21,7 @@ export default defineConfig(({ mode }) => {
       reportCompressedSize: true,
     },
     cacheDir: '../../node_modules/.vite/apps/frontend',
-    plugins: [react(), nxViteTsPaths()],
+    plugins: [react(), nxViteTsPaths(), TanStackRouterVite()],
     preview: {
       host: 'localhost',
       port: 4300,
