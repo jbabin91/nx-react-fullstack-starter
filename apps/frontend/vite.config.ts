@@ -25,7 +25,15 @@ export default defineConfig({
   root: __dirname,
   server: {
     host: 'localhost',
+    open: true,
     port: 4200,
+    proxy: {
+      '/trpc': {
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/trpc/, ''),
+        target: 'http://localhost:3333/trpc',
+      },
+    },
   },
   test: {
     cache: {

@@ -47,5 +47,6 @@ Thumbs.db
 # Nx
 .nx/cache
 
-# Local Postgres data
-postgres-data
+# Local Docker Container data
+.containers
+.containers/db
