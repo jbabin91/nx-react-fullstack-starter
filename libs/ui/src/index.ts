@@ -5,12 +5,21 @@ export { cn } from './lib';
 export { QueryDevtools, RouterDevtools } from './components/utils';
 
 // Custom UI Components
+export * from './components/custom/ui';
 export { ModeToggle } from './components/mode-toggle';
+export {
+  Spinner,
+  type SpinnerProps,
+  spinnerVariants,
+} from './components/spinner';
 export { ThemeProvider, useTheme } from './components/theme-provider';
-export * from './components/ui';
 
 // Shadcn UI Components
-export { Button, buttonVariants } from './components/ui/button';
+export {
+  Button,
+  type ButtonProps,
+  buttonVariants,
+} from './components/ui/button';
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -38,4 +47,5 @@ export {
   FormMessage,
   useFormField,
 } from './components/ui/form';
+export { Input, type InputProps } from './components/ui/input';
 export { Label } from './components/ui/label';
