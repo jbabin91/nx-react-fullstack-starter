@@ -64,5 +64,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": []
+  "tags": ["frontend"]
 }
