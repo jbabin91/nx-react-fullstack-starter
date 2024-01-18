@@ -1,0 +1,12 @@
+{
+  "name": "@repo/auth",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "typings": "./index.d.ts",
+  "dependencies": {
+    "@repo/db": "*",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

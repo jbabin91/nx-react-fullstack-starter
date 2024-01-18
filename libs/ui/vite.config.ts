@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react-swc';
+import million from 'million/compiler';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
@@ -34,6 +35,7 @@ export default defineConfig({
   },
   cacheDir: '../../node_modules/.vite/libs/ui',
   plugins: [
+    million.vite({ auto: true }),
     react(),
     nxViteTsPaths(),
     dts({

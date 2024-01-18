@@ -116,5 +116,6 @@
       "extends": ["plugin:@nx/javascript"],
       "rules": {}
     }
-  ]
+  ],
+  "reportUnusedDisableDirectives": true
 }

@@ -1,5 +1,4 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "types": [
@@ -12,6 +11,7 @@
       "@nx/react/typings/image.d.ts"
     ]
   },
+  "extends": "./tsconfig.json",
   "include": [
     "vite.config.ts",
     "vitest.config.ts",

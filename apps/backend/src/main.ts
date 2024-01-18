@@ -6,12 +6,30 @@ import * as path from 'node:path';
 
 import { appRouter, createContext } from '@repo/api';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express from 'express';
+import morgan from 'morgan';
+
+import { envConfig } from './config';
+
+const port = envConfig.port;
+const origin = envConfig.origin || `http://localhost:${port}`;
 
 const app = express();
+if (envConfig.env !== 'production') app.use(morgan('dev'));
+
+app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: [origin, `http://localhost:${port}`],
+  }),
+);
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+// TODO: should we switch to /api/trpc ?
 app.use(
   '/trpc',
   createExpressMiddleware({
@@ -24,7 +42,6 @@ app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to backend!' });
 });
 
-const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });

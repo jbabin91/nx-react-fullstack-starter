@@ -1,68 +1,41 @@
-import { ModeToggle, RouterDevtools } from '@repo/ui';
-import { Link, Outlet, rootRouteWithContext } from '@tanstack/react-router';
+import { RootRoute } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
-import { type Auth } from '../../utils/auth';
+import { Layout } from '../../components/layout';
+import { trpc } from '../../libs';
+import { useAuthStore } from '../../store';
+import { router } from '../router';
 
-export const Route = rootRouteWithContext<{
-  auth: Auth;
-}>()({
+export const Route = new RootRoute({
   component: RootComponent,
 });
 
 function RootComponent() {
-  const { auth } = Route.useRouteContext({
-    select: ({ auth }) => ({ auth, status: auth.status }),
+  const { setAuthUser } = useAuthStore();
+  const {
+    data: user,
+    isError,
+    isSuccess,
+    error,
+  } = trpc.auth.getMe.useQuery(undefined, {
+    retry: 1,
+    select: (data) => data.data.user,
   });
 
-  return (
-    <div className="min-h-screen">
-      <nav className="p-2 flex justify-between">
-        <div className="flex gap-2 text-lg">
-          {(
-            [
-              ['/', 'Home'],
-              ['/about', 'About'],
-            ] as const
-          ).map(([to, label]) => {
-            return (
-              <div key={to}>
-                <Link
-                  activeOptions={
-                    {
-                      // If the route points to the root of it's parent,
-                      // make sure it's only active if it's exact
-                      // exact: to === '.',
-                    }
-                  }
-                  activeProps={{ className: `font-bold` }}
-                  className={`block py-2 px-3 text-blue-700`}
-                  preload="intent"
-                  to={to}
-                >
-                  {label}
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-        <div className="flex gap-2 text-lg">
-          {auth?.username ? (
-            <Link className={`block py-2 px-3 text-blue-700`} to={'/profile'}>
-              Profile
-            </Link>
-          ) : (
-            <Link className={`block py-2 px-3 text-blue-700`} to={'/login'}>
-              Login
-            </Link>
-          )}
-          <ModeToggle />
-        </div>
-      </nav>
-      <hr />
-      <main className="px-4 pt-2">
-        <Outlet />
-      </main>
-      <RouterDevtools position="bottom-left" />
-    </div>
-  );
+  useEffect(() => {
+    if (isSuccess && user) {
+      setAuthUser(user);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+      if (error.message.includes('Could not refresh access token')) {
+        router.navigate({ to: '/login' });
+      }
+    }
+  }, [isError]);
+
+  return <Layout />;
 }
