@@ -6,6 +6,7 @@
   "typings": "./index.d.ts",
   "dependencies": {
     "@prisma/client": "^5.8.0",
+    "@repo/db": "*",
     "@trpc/server": "11.0.0-next-beta.193",
     "zod": "^3.22.4"
   }
