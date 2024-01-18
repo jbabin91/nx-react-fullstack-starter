@@ -68,7 +68,8 @@
           {
             "prefer": "type-imports"
           }
-        ]
+        ],
+        "@typescript-eslint/no-explicit-any": "off"
       }
     },
     {

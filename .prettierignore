@@ -4,3 +4,5 @@
 /.nx/cache
 
 pnpm-lock.yaml
+
+*.gen.ts

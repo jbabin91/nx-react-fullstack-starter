@@ -1,15 +1,15 @@
-import { ModeToggle } from '@repo/ui';
+import { RouterProvider } from '@tanstack/react-router';
+import { Suspense } from 'react';
 
-import { QueryTestPage } from './pages/QueryTestPage';
-import { WelcomePage } from './pages/WelcomePage';
 import { Providers } from './providers';
+import { router } from './router';
 
 export function App() {
   return (
     <Providers>
-      <ModeToggle />
-      <WelcomePage />
-      <QueryTestPage />
+      <Suspense fallback={<>loading...</>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </Providers>
   );
 }
