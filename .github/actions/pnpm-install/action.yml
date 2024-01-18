@@ -27,7 +27,7 @@ runs:
       with:
         path: node_modules
         key: ${{ runner.os }}-node_modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-key: |
+        restore-keys: |
           ${{ runner.os }}-node_modules-
     - name: Install deps (with cache)
       shell: bash
