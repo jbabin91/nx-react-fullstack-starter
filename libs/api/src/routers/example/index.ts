@@ -1,3 +1,4 @@
+import { redisClient } from '../../lib/redis-client';
 import { publicProcedure, router } from '../../trpc';
 
 export const exampleRouter = router({
@@ -10,5 +11,13 @@ export const exampleRouter = router({
     return {
       message: 'hello world',
     };
+  }),
+  sayHello: publicProcedure.query(async () => {
+    // await redisClient.set(
+    //   'tRPC',
+    //   '??Welcome to tRPC with React.js, Express and Typescript!',
+    // );
+    const message = await redisClient.get('tRPC');
+    return { message };
   }),
 });

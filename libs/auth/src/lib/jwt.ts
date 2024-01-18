@@ -10,7 +10,7 @@ import { envConfig } from '../config';
  * @param user The user object.
  * @returns An object containing the access token and refresh token.
  */
-async function signToken({
+async function signTokens({
   user,
 }: {
   user: User;
@@ -127,6 +127,8 @@ function generateTokens(
 export {
   generateTokens, // TODO: Look into combining this with signToken
   signJwt,
-  signToken, // NEW basically the same thing as generateTokens
+  // NEW basically the same thing as generateTokens
   verifyJwt,
 };
+
+export { signTokens };

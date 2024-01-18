@@ -1,5 +1,4 @@
-import { Button } from '@repo/ui';
-import { FileRoute, useRouter } from '@tanstack/react-router';
+import { FileRoute } from '@tanstack/react-router';
 
 import { useAuthStore } from '../../store';
 
@@ -8,8 +7,7 @@ export const Route = new FileRoute('/_auth/profile').createRoute({
 });
 
 function ProfilePage() {
-  const router = useRouter();
-  const { authUser: user, logout } = useAuthStore();
+  const { authUser: user } = useAuthStore();
 
   return (
     <div className="p-2 space-y-4">
@@ -19,14 +17,6 @@ function ProfilePage() {
           Email: <strong>{user?.email}</strong>
         </p>
       </div>
-      <Button
-        onClick={() => {
-          logout();
-          router.invalidate();
-        }}
-      >
-        Logout
-      </Button>
     </div>
   );
 }

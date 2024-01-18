@@ -1,9 +1,11 @@
-import { comparePasswords, signJwt, signToken, verifyJwt } from '@repo/auth';
+import { Prisma } from '@prisma/client';
+import { comparePasswords, signJwt, signTokens, verifyJwt } from '@repo/auth';
 import type { CreateUser, LoginInput } from '@repo/db';
 import { TRPCError } from '@trpc/server';
 import type { CookieOptions } from 'express';
 
 import { envConfig } from '../config';
+import { redisClient } from '../lib/redis-client';
 import { createUser, findUserByEmail, findUserById } from '../services/user.db';
 import type { Context } from '../trpc/context';
 
@@ -40,7 +42,10 @@ async function registerHandler({ input }: { input: CreateUser }) {
       status: 'success',
     };
   } catch (error: any) {
-    if (error.code === 11_000) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
       throw new TRPCError({
         code: 'CONFLICT',
         message: 'Email already exists',
@@ -78,7 +83,9 @@ async function loginHandler({
     }
 
     // Create the Access and refresh tokens
-    const { access_token, refresh_token } = await signToken({ user });
+    const { access_token, refresh_token } = await signTokens({ user });
+
+    redisClient.set(`${user.id}`, JSON.stringify(user), { EX: 60 * 60 });
 
     // Send Access Token in Cookie
     ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
@@ -122,12 +129,11 @@ async function refreshAccessTokenHandler({ ctx }: { ctx: Context }) {
       throw new TRPCError({ code: 'FORBIDDEN', message });
     }
 
-    // Could probably use the refresh tokens table inside of redis
-    // TODO: Check if the user has a valid session
-    // const session = await redisClient.get(decoded.sub);
-    // if (!session) {
-    //   throw new TRPCError({ code: 'FORBIDDEN', message });
-    // }
+    // Check if the user has a valid session
+    const session = await redisClient.get(decoded.sub);
+    if (!session) {
+      throw new TRPCError({ code: 'FORBIDDEN', message });
+    }
 
     // Check if the user exist
     const user = await findUserById(decoded.sub);
@@ -175,8 +181,8 @@ function logout({ ctx }: { ctx: Context }) {
 async function logoutHandler({ ctx }: { ctx: Context }) {
   try {
     // TODO: Remove the user from redis
-    // const user = ctx.user;
-    // await redisClient.del(user?._id.toString());
+    const user = ctx.user;
+    await redisClient.del(user?.id as string);
     logout({ ctx });
     return {
       message: 'success',

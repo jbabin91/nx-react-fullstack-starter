@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   frontend:
+    container_name: frontend
     build:
       dockerfile: ./apps/frontend/Dockerfile
       context: .
@@ -12,6 +13,7 @@ services:
     depends_on:
       - backend
   backend:
+    container_name: backend
     build:
       dockerfile: ./apps/backend/Dockerfile
       context: .
@@ -23,6 +25,7 @@ services:
       DATABASE_URL: 'postgresql://postgres:postgres@db:5432/db?schema=public'
   db:
     image: postgres:latest
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
@@ -32,6 +35,14 @@ services:
       - 5432:5432
     volumes:
       - ./.containers/db:/var/lib/postgresql/data
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./.containers/redis:/data
 
 networks:
   default:

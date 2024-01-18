@@ -3,6 +3,7 @@ import { verifyJwt } from '@repo/auth';
 import { TRPCError } from '@trpc/server';
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 
+import { redisClient } from '../lib/redis-client';
 import { findUserById } from '../services/user.db';
 
 async function deserializeUser({
@@ -45,11 +46,11 @@ async function deserializeUser({
       return notAuthenticated;
     }
 
-    // // Check if user has a valid session
-    // // const session = await redisClient.get(decoded.sub);
-    // // if (!session) {
-    // //   return notAuthenticated;
-    // // }
+    // Check if user has a valid session
+    const session = await redisClient.get(decoded.sub);
+    if (!session) {
+      return notAuthenticated;
+    }
 
     // Check if user still exist
     const user = await findUserById(decoded.sub);

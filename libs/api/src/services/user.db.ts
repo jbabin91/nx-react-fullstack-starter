@@ -6,6 +6,8 @@ import { omit } from 'lodash-es';
 
 import { prisma } from '../lib/prisma-client';
 
+export const excludedFields = ['password'];
+
 /**
  * Retrieves all users from the database.
  *

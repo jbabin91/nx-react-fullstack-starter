@@ -1,6 +1,6 @@
 import { QueryDevtools } from '@repo/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { getFetch } from '@trpc/client';
+import { getFetch, loggerLink } from '@trpc/client';
 import { httpBatchLink } from '@trpc/react-query';
 import { useState } from 'react';
 
@@ -20,6 +20,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
+        loggerLink(),
         httpBatchLink({
           fetch: async (input, init?) => {
             const fetch = getFetch();
