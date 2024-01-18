@@ -1,7 +1,7 @@
 import { publicProcedure, router } from '../../trpc';
 
 export const exampleRouter = router({
-  goodBye: publicProcedure.query(() => {
+  goodbye: publicProcedure.query(() => {
     return {
       message: 'goodbye!',
     };
