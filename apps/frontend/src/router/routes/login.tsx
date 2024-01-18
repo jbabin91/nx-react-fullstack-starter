@@ -62,12 +62,13 @@ function LoginComponent() {
   });
 
   const { isSubmitSuccessful } = form.formState;
+  const reset = form.reset;
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      form.reset();
+      reset();
     }
-  }, [isSubmitSuccessful]);
+  }, [isSubmitSuccessful, reset]);
 
   // Ah, the subtle nuances of client side auth. 🙄
   // useLayoutEffect(() => {

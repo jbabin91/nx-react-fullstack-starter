@@ -24,7 +24,7 @@ interface SpinnerProps
 function Spinner({ className, size }: SpinnerProps) {
   return (
     <>
-      <Icons.spinner className={cn(spinnerVariants({ className, size }))} />
+      <Icons.Spinner className={cn(spinnerVariants({ className, size }))} />
       <span className="sr-only">loading</span>
     </>
   );
