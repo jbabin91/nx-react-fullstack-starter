@@ -8,6 +8,7 @@ export const Route = new FileRoute('/_auth/profile').createRoute({
 function ProfilePage() {
   const router = useRouter();
   const { auth, username } = Route.useRouteContext();
+
   return (
     <div className="p-2 space-y-4">
       <div>

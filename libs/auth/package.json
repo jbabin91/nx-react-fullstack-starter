@@ -1,0 +1,11 @@
+{
+  "name": "@repo/auth",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "typings": "./index.d.ts",
+  "dependencies": {
+    "@repo/db": "*",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

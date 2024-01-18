@@ -21,6 +21,7 @@ function RootComponent() {
           {(
             [
               ['/', 'Home'],
+              ['/posts', 'Posts'],
               ['/about', 'About'],
             ] as const
           ).map(([to, label]) => {

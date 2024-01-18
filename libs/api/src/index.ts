@@ -1,2 +1,2 @@
 export { type Context, createContext } from './lib/context';
-export { type AppRouter, appRouter } from './lib/routers';
+export { type AppRouter, appRouter } from './routers';

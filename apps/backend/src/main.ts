@@ -6,9 +6,11 @@ import * as path from 'node:path';
 
 import { appRouter, createContext } from '@repo/api';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
+import cors from 'cors';
 import express from 'express';
 
 const app = express();
+app.use(cors());
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 

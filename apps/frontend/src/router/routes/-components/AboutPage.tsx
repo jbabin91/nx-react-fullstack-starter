@@ -2,9 +2,6 @@ import { trpc } from '../../../libs';
 
 export function AboutPage() {
   const hello = trpc.example.hello.useQuery();
-  const users = trpc.user.getUsers.useQuery();
-
-  console.log(users?.data);
 
   return (
     <main className="p-2">

@@ -1,9 +1,8 @@
-import { updateUserSchema, userSchema } from '@repo/db';
+import { updateUserSchema } from '@repo/db';
 import { z } from 'zod';
 
-import { publicProcedure, router } from '../../trpc';
+import { protectedProcedure, publicProcedure, router } from '../../lib/trpc';
 import {
-  createUser,
   deleteUser,
   getUserByEmail,
   getUserById,
@@ -12,20 +11,17 @@ import {
 } from './user.db';
 
 export const userRouter = router({
-  addUser: publicProcedure
-    .input(userSchema)
-    .mutation(async ({ input }) => await createUser(input)),
-  deleteUser: publicProcedure
+  delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => await deleteUser(input.id)),
-  getUserByEmail: publicProcedure
+  getByEmail: publicProcedure
     .input(z.object({ email: z.string().email() }))
     .query(async ({ input }) => await getUserByEmail(input.email)),
-  getUserById: publicProcedure
+  getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => await getUserById(input.id)),
-  getUsers: publicProcedure.query(async () => await getUsers()),
-  updateUser: publicProcedure
+  list: publicProcedure.query(async () => await getUsers()),
+  update: protectedProcedure
     .input(updateUserSchema)
     .mutation(async ({ input }) => await updateUser(input)),
 });
