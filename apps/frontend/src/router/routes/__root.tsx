@@ -26,7 +26,7 @@ function RootComponent() {
     if (isSuccess && user) {
       setAuthUser(user);
     }
-  }, [isSuccess]);
+  }, [isSuccess, user, setAuthUser]);
 
   useEffect(() => {
     if (isError) {
@@ -35,7 +35,7 @@ function RootComponent() {
         router.navigate({ to: '/login' });
       }
     }
-  }, [isError]);
+  }, [isError, error]);
 
   return <Layout />;
 }

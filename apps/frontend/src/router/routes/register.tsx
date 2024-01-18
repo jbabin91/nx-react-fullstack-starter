@@ -53,12 +53,13 @@ function RegisterComponent() {
   });
 
   const { isSubmitSuccessful } = form.formState;
+  const reset = form.reset;
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      form.reset();
+      reset();
     }
-  }, [isSubmitSuccessful]);
+  }, [isSubmitSuccessful, reset]);
 
   const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
     SignUpUser(values);

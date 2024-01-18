@@ -28,15 +28,15 @@ import {
 export type Icon = LucideIcon;
 
 export const Icons = {
-  add: PlusIcon,
-  arrowRight: ArrowRightIcon,
-  billing: CreditCardIcon,
-  check: CheckIcon,
-  chevronLeft: ChevronLeftIcon,
-  chevronRight: ChevronRightIcon,
-  close: XIcon,
-  ellipsis: MoreVerticalIcon,
-  gitHub: ({ ...props }: LucideProps) => (
+  Add: PlusIcon,
+  ArrowRight: ArrowRightIcon,
+  Billing: CreditCardIcon,
+  Check: CheckIcon,
+  ChevronLeft: ChevronLeftIcon,
+  ChevronRight: ChevronRightIcon,
+  Close: XIcon,
+  Ellipsis: MoreVerticalIcon,
+  GitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
       data-icon="github"
@@ -53,19 +53,19 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  help: HelpCircleIcon,
-  laptop: LaptopIcon,
-  logo: CommandIcon,
-  media: ImageIcon,
-  moon: MoonIcon,
-  page: FileIcon,
-  pizza: PizzaIcon,
-  post: FileTextIcon,
-  settings: SettingsIcon,
-  spinner: Loader2Icon,
-  sun: SunMediumIcon,
-  trash: TrashIcon,
-  twitter: TwitterIcon,
-  user: UserIcon,
-  warning: AlertTriangle,
+  Help: HelpCircleIcon,
+  Laptop: LaptopIcon,
+  Logo: CommandIcon,
+  Media: ImageIcon,
+  Moon: MoonIcon,
+  Page: FileIcon,
+  Pizza: PizzaIcon,
+  Post: FileTextIcon,
+  Settings: SettingsIcon,
+  Spinner: Loader2Icon,
+  Sun: SunMediumIcon,
+  Trash: TrashIcon,
+  Twitter: TwitterIcon,
+  User: UserIcon,
+  Warning: AlertTriangle,
 };
