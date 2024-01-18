@@ -1,7 +1,6 @@
 import { createPostSchema, updatePostSchema } from '@repo/db';
 import { z } from 'zod';
 
-import { protectedProcedure, publicProcedure, router } from '../../lib/trpc';
 import {
   createPost,
   deletePost,
@@ -9,13 +8,14 @@ import {
   getPosts,
   getPostsByUserId,
   updatePost,
-} from './post.db';
+} from '../../services/post.db';
+import { isAuthorizedProcedure, publicProcedure, router } from '../../trpc';
 
 export const postRouter = router({
-  add: protectedProcedure
+  add: isAuthorizedProcedure
     .input(createPostSchema)
     .mutation(async ({ input }) => await createPost({ data: input })),
-  delete: protectedProcedure
+  delete: isAuthorizedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => await deletePost({ id: input.id })),
   getById: publicProcedure
@@ -25,7 +25,7 @@ export const postRouter = router({
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => await getPostsByUserId({ id: input.id })),
   list: publicProcedure.query(async () => await getPosts()),
-  update: protectedProcedure
+  update: isAuthorizedProcedure
     .input(updatePostSchema)
     .mutation(async ({ input }) => await updatePost({ data: input })),
 });

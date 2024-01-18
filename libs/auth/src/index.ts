@@ -1,11 +1,7 @@
 export * from './lib/auth';
 
 // JWT helpers
-export {
-  generateAccessToken,
-  generateRefreshToken,
-  generateTokens,
-} from './lib/jwt';
+export { generateTokens, signJwt, signToken, verifyJwt } from './lib/jwt';
 
-// Hashing helpers
-export { hashToken } from './lib/hash-token';
+// Password Utils
+export { comparePasswords, hashPassword, hashToken } from './lib/passwordUtils';

@@ -2,7 +2,7 @@ import type { CreatePost, Post, Posts, UpdatePost } from '@repo/db';
 import { createPostSchema, updatePostSchema } from '@repo/db';
 import { TRPCError } from '@trpc/server';
 
-import { prisma } from '../../lib/prisma-client';
+import { prisma } from '../lib/prisma-client';
 
 /**
  * Retrieves all posts from the database.

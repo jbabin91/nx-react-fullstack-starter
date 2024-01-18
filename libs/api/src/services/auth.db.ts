@@ -1,13 +1,13 @@
 import { createId } from '@paralleldrive/cuid2';
 import type { RefreshToken } from '@prisma/client';
-import { generateTokens, hashToken } from '@repo/auth';
-import type { AddRefreshToken, CreateUser, LoginUser } from '@repo/db';
+import { comparePasswords, generateTokens, hashToken } from '@repo/auth';
+import type { AddRefreshToken, CreateUser, LoginInput } from '@repo/db';
 import { TRPCError } from '@trpc/server';
-import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
-import { prisma } from '../../lib/prisma-client';
-import { createUser, getUserByEmail, getUserById } from '../user/user.db';
+import { envConfig } from '../config';
+import { prisma } from '../lib/prisma-client';
+import { createUser, findUserByEmail, findUserById } from './user.db';
 
 type SessionResponse = {
   accessToken: string;
@@ -38,7 +38,7 @@ export async function registerUser({
     });
   }
 
-  const existingUser = await getUserByEmail(email);
+  const existingUser = await findUserByEmail({ email });
 
   if (existingUser) {
     throw new TRPCError({
@@ -67,7 +67,7 @@ export async function registerUser({
 export async function loginUser({
   data,
 }: {
-  data: LoginUser;
+  data: LoginInput;
 }): Promise<SessionResponse> {
   const { email, password } = data;
 
@@ -77,7 +77,7 @@ export async function loginUser({
     });
   }
 
-  const existingUser = await getUserByEmail(email);
+  const existingUser = await findUserByEmail({ email });
   if (!existingUser) {
     throw new TRPCError({
       code: 'FORBIDDEN',
@@ -85,7 +85,10 @@ export async function loginUser({
     });
   }
 
-  const validPassword = await bcrypt.compare(password, existingUser.password);
+  const validPassword = comparePasswords({
+    hashedPassword: existingUser.password,
+    password,
+  });
   if (!validPassword) {
     throw new TRPCError({
       code: 'FORBIDDEN',
@@ -125,10 +128,11 @@ export async function refreshToken({
     });
   }
 
-  const payload = jwt.verify(
-    refreshToken,
-    import.meta.env['JWT_REFRESH_SECRET'],
-  ) as { jti: string; userId: string; refreshToken: string };
+  const payload = jwt.verify(refreshToken, envConfig.jwtRefreshSecret) as {
+    jti: string;
+    userId: string;
+    refreshToken: string;
+  };
   const savedRefreshToken = await findRefreshTokenById({ id: payload.jti });
 
   if (!savedRefreshToken || savedRefreshToken.revoked === true) {
@@ -137,7 +141,7 @@ export async function refreshToken({
     });
   }
 
-  const user = await getUserById(payload.userId);
+  const user = await findUserById(payload.userId);
   if (!user) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
@@ -178,7 +182,7 @@ export async function addRefreshTokenToWhitelist({
 }: AddRefreshToken): Promise<RefreshToken> {
   return await prisma.refreshToken.create({
     data: {
-      hashedToken: hashToken(refreshToken),
+      hashedToken: hashToken({ token: refreshToken }),
       id: jti,
       userId,
     },

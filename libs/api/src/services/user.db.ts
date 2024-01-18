@@ -1,9 +1,10 @@
-import type { CreateUser, UpdateUser, User } from '@repo/db';
+import { hashPassword } from '@repo/auth';
+import type { CreateUser, UpdateUser, User, UserResponse } from '@repo/db';
 import { createUserSchema, updateUserSchema } from '@repo/db';
 import { TRPCError } from '@trpc/server';
-import * as bcrypt from 'bcryptjs';
+import { omit } from 'lodash-es';
 
-import { prisma } from '../../lib/prisma-client';
+import { prisma } from '../lib/prisma-client';
 
 /**
  * Retrieves all users from the database.
@@ -20,12 +21,14 @@ export async function getUsers(): Promise<User[]> {
  * @param {string} id The ID of the user.
  * @returns {Promise<User | null>} A promise that resolves to the user object if found, or null if not found.
  */
-export async function getUserById(id: string): Promise<User | null> {
-  return await prisma.user.findUnique({
+export async function findUserById(id: string): Promise<User | null> {
+  const user = await prisma.user.findUnique({
     where: {
       id,
     },
   });
+  const userWithoutPassword: User = omit(user, 'password');
+  return userWithoutPassword;
 }
 
 /**
@@ -34,7 +37,11 @@ export async function getUserById(id: string): Promise<User | null> {
  * @param {string} email The email of the user to retrieve.
  * @returns {Promise<User | null>} A Promise that resolves to the user object if found, or null if not found.
  */
-export async function getUserByEmail(email: string): Promise<User | null> {
+export async function findUserByEmail({
+  email,
+}: {
+  email: string;
+}): Promise<UserResponse | null> {
   return await prisma.user.findUnique({
     where: {
       email,
@@ -58,7 +65,7 @@ export async function createUser(data: CreateUser): Promise<User> {
     });
   }
 
-  user.data.password = bcrypt.hashSync(user.data.password, 12);
+  user.data.password = hashPassword({ password: user.data.password });
 
   const createdUser = await prisma.user.create({
     data: user.data,

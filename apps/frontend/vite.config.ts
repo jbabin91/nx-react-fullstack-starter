@@ -35,8 +35,8 @@ export default defineConfig(({ mode }) => {
         '^/trpc': {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/trpc/, ''),
-          target: env.API_URL
-            ? `${env.API_URL}/trpc`
+          target: env['API_URL']
+            ? `${env['API_URL']}/trpc`
             : 'http://localhost:3333/trpc',
         },
       },

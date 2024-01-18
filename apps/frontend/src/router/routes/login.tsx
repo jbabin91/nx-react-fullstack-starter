@@ -1,19 +1,27 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { LoginInput } from '@repo/db';
+import { loginUserSchema } from '@repo/db';
 import {
   Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   Input,
+  useToast,
 } from '@repo/ui';
-import { FileRoute, useRouter } from '@tanstack/react-router';
-import { useLayoutEffect } from 'react';
+import { FileRoute, Link, useRouter } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { trpc } from '../../libs';
 
 export const Route = new FileRoute('/login')
   .createRoute({
@@ -25,81 +33,106 @@ export const Route = new FileRoute('/login')
     component: LoginComponent,
   });
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters long',
-  }),
-});
-type Form = z.infer<typeof formSchema>;
-
 function LoginComponent() {
   const router = useRouter();
-  const { auth, status } = Route.useRouteContext({
-    select: ({ auth }) => ({ auth, status: auth.status }),
-  });
+  const { toast } = useToast();
   const search = Route.useSearch();
+  // const { status } = useAuthStore();
 
-  const form = useForm<Form>({
-    defaultValues: {
-      username: '',
+  const { isPending, mutate: loginUser } = trpc.auth.login.useMutation({
+    onError: (error) => {
+      toast({ description: error.message, variant: 'destructive' });
     },
-    resolver: zodResolver(formSchema),
+    onSuccess: (data) => {
+      toast({ description: 'Logged in successfully' });
+      if (search.redirect) {
+        router.history.push(search.redirect);
+        console.log('redirecting to', search.redirect);
+        router.navigate({ to: search.redirect });
+      }
+    },
   });
 
-  function onSubmit(values: Form) {
-    auth.login(values.username);
+  const form = useForm<LoginInput>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: zodResolver(loginUserSchema),
+  });
+
+  const { isSubmitSuccessful } = form.formState;
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      form.reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  // Ah, the subtle nuances of client side auth. 🙄
+  // useLayoutEffect(() => {
+  //   if (status === 'loggedIn' && search.redirect) {
+  //     router.history.push(search.redirect);
+  //   }
+  // }, [status, search.redirect]);
+
+  function onSubmit(values: LoginInput) {
+    loginUser(values);
+    form.reset();
     router.invalidate();
   }
 
-  // Ah, the subtle nuances of client side auth. 🙄
-  useLayoutEffect(() => {
-    if (status === 'loggedIn' && search.redirect) {
-      router.history.push(search.redirect);
-    }
-  }, [status, search.redirect]);
-
-  return status === 'loggedIn' ? (
-    <div>
-      Logged in as <strong>{auth.username}</strong>
-      <div className="h-2" />
-      <Button
-        onClick={() => {
-          auth.logout();
-          router.invalidate();
-        }}
-      >
-        Logout
-      </Button>
-      <div className="h-2" />
-    </div>
-  ) : (
-    <div className="p-2">
-      <div>You must log in!</div>
-      <div className="h-2" />
-      <Form {...form}>
-        <form
-          className="space-y-4 max-w-sm"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Login</Button>
-        </form>
-      </Form>
-    </div>
+  return (
+    <section className="py-12 grid place-items-center">
+      <Card className="w-[350px] bg-zinc-900">
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              className="space-y-4 max-w-sm"
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="john.doe@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button loading={isPending} type="submit">
+                Login
+              </Button>
+              <span className="block">
+                Need an account?{' '}
+                <Link className="text-blue-500" to="/register">
+                  Sign Up Here
+                </Link>
+              </span>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </section>
   );
 }

@@ -6,6 +6,7 @@
   "typings": "./index.d.ts",
   "dependencies": {
     "@repo/db": "*",
+    "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2"
   }
 }
