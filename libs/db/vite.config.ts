@@ -22,14 +22,13 @@ export default defineConfig({
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
       formats: ['es', 'cjs'],
-
       name: 'db',
     },
     outDir: '../../dist/libs/db',
     reportCompressedSize: true,
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: [],
+      external: ['prisma', '@prisma/client'],
     },
   },
   cacheDir: '../../node_modules/.vite/libs/db',

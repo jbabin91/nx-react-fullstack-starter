@@ -23,7 +23,6 @@ export default defineConfig({
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
       formats: ['es', 'cjs'],
-
       name: 'ui',
     },
     outDir: '../../dist/libs/ui',
