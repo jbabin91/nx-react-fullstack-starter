@@ -36,9 +36,10 @@ async function deserializeUser({
       return notAuthenticated;
     }
 
+    // key: 'accessTokenPublicKey',
     // Validate Access Token
     const decoded = verifyJwt<{ sub: string }>({
-      key: 'accessTokenPublicKey',
+      key: 'ACCESS_TOKEN_PUBLIC_KEY',
       token: access_token,
     });
 

@@ -1,19 +1,16 @@
-export const envConfig: {
-  accessTokenExpiresIn: number;
-  refreshTokenExpiresIn: number;
-  accessTokenPrivateKey: string;
-  accessTokenPublicKey: string;
-  refreshTokenPrivateKey: string;
-  refreshTokenPublicKey: string;
-  jwtAccessSecret: string;
-  jwtRefreshSecret: string;
-} = {
-  accessTokenExpiresIn: 15,
-  accessTokenPrivateKey: process.env['ACCESS_TOKEN_PRIVATE_KEY'] as string,
-  accessTokenPublicKey: process.env['ACCESS_TOKEN_PUBLIC_KEY'] as string,
-  jwtAccessSecret: process.env['JWT_ACCESS_SECRET'] as string,
-  jwtRefreshSecret: process.env['JWT_REFRESH_SECRET'] as string,
-  refreshTokenExpiresIn: 60,
-  refreshTokenPrivateKey: process.env['REFRESH_TOKEN_PRIVATE_KEY'] as string,
-  refreshTokenPublicKey: process.env['REFRESH_TOKEN_PUBLIC_KEY'] as string,
-};
+import { cleanEnv, num, str } from 'envalid';
+
+export const env = cleanEnv(process.env, {
+  ACCESS_TOKEN_EXPIRES_IN: num({
+    default: 15,
+  }),
+  ACCESS_TOKEN_PRIVATE_KEY: str(),
+  ACCESS_TOKEN_PUBLIC_KEY: str(),
+  JWT_ACCESS_SECRET: str(),
+  JWT_REFRESH_SECRET: str(),
+  REFRESH_TOKEN_EXPIRES_IN: num({
+    default: 60,
+  }),
+  REFRESH_TOKEN_PRIVATE_KEY: str(),
+  REFRESH_TOKEN_PUBLIC_KEY: str(),
+});
