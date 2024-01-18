@@ -3,6 +3,12 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
+      "files": ["./**/schemas/**/*.ts"],
+      "rules": {
+        "sort-keys-fix/sort-keys-fix": "off"
+      }
+    },
+    {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {}
     },
