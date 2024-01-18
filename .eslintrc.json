@@ -23,6 +23,28 @@
       }
     ]
   },
+  "extends": ["plugin:unicorn/recommended", "prettier"],
+  "plugins": ["@nx", "import", "simple-import-sort", "sort-keys-fix"],
+  "rules": {
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "sort-keys-fix/sort-keys-fix": "error",
+    "unicorn/prevent-abbreviations": "off",
+    "unicorn/no-null": "off",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true,
+          "pascalCase": true,
+          "kebabCase": true
+        }
+      }
+    ]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -38,6 +60,23 @@
                 "onlyDependOnLibsWithTags": ["*"]
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.jsx", "*.tsx"],
+      "extends": ["plugin:@nx/react"],
+      "rules": {
+        "react/jsx-sort-props": [
+          "error",
+          {
+            "callbacksLast": true,
+            "shorthandFirst": true,
+            "shorthandLast": false,
+            "ignoreCase": true,
+            "noSortAlphabetically": false,
+            "reservedFirst": true
           }
         ]
       }

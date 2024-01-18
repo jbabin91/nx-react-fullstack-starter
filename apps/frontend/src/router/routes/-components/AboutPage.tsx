@@ -1,12 +1,6 @@
-import { FileRoute } from '@tanstack/react-router';
-
 import { trpc } from '../../../libs';
 
-export const Route = new FileRoute('/about/').createRoute({
-  component: AboutPage,
-});
-
-function AboutPage() {
+export function AboutPage() {
   const hello = trpc.example.hello.useQuery();
   const users = trpc.user.getUsers.useQuery();
 
