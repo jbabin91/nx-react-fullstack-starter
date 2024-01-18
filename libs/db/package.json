@@ -4,5 +4,7 @@
   "main": "./index.js",
   "module": "./index.mjs",
   "typings": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
 }
