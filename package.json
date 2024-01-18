@@ -24,7 +24,7 @@
   "lint-staged": {
     "*": [
       "prettier -uw",
-      "nx affected:lint --fix true"
+      "nx affected:lint -- --fix true"
     ]
   },
   "dependencies": {
