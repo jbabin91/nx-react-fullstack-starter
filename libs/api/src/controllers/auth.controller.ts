@@ -71,10 +71,11 @@ async function loginHandler({
 
     if (
       !user ||
-      !comparePasswords({
-        hashedPassword: input.password,
-        password: user.password,
-      })
+      (user?.password &&
+        !comparePasswords({
+          hashedPassword: input.password,
+          password: user?.password,
+        }))
     ) {
       throw new TRPCError({
         code: 'BAD_REQUEST',

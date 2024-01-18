@@ -5,6 +5,7 @@ export const userSchema = object({
   id: string(),
   name: string(),
   email: string().email(),
+  password: string().optional(),
   role: z.enum(['ADMIN', 'USER']),
   createdAt: date(),
   updatedAt: date(),
@@ -69,14 +70,3 @@ export const registerUserSchema = object({
   message: 'Passwords do not match',
 });
 export type RegisterInput = TypeOf<typeof registerUserSchema>;
-
-export const userResponseSchema = object({
-  id: string(),
-  name: string(),
-  email: string().email(),
-  password: string(),
-  role: z.enum(['ADMIN', 'USER']),
-  createdAt: date(),
-  updatedAt: date(),
-});
-export type UserResponse = TypeOf<typeof userResponseSchema>;

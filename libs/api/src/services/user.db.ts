@@ -1,12 +1,11 @@
 import { hashPassword } from '@repo/auth';
-import type { CreateUser, UpdateUser, User, UserResponse } from '@repo/db';
-import { createUserSchema, updateUserSchema } from '@repo/db';
+import type { CreateUser, UpdateUser, User } from '@repo/db';
+import { createUserSchema, excludeFields, updateUserSchema } from '@repo/db';
 import { TRPCError } from '@trpc/server';
-import { omit } from 'lodash-es';
 
 import { prisma } from '../lib/prisma-client';
 
-export const excludedFields = ['password'];
+const select = excludeFields(prisma.user.fields, ['password']);
 
 /**
  * Retrieves all users from the database.
@@ -14,7 +13,7 @@ export const excludedFields = ['password'];
  * @returns {Promise<User[]>} A promise that resolves to an array of User objects.
  */
 export async function getUsers(): Promise<User[]> {
-  return await prisma.user.findMany();
+  return await prisma.user.findMany({ select });
 }
 
 /**
@@ -25,12 +24,12 @@ export async function getUsers(): Promise<User[]> {
  */
 export async function findUserById(id: string): Promise<User | null> {
   const user = await prisma.user.findUnique({
+    select,
     where: {
       id,
     },
   });
-  const userWithoutPassword: User = omit(user, 'password');
-  return userWithoutPassword;
+  return user;
 }
 
 /**
@@ -43,7 +42,7 @@ export async function findUserByEmail({
   email,
 }: {
   email: string;
-}): Promise<UserResponse | null> {
+}): Promise<User | null> {
   return await prisma.user.findUnique({
     where: {
       email,
@@ -69,11 +68,10 @@ export async function createUser(data: CreateUser): Promise<User> {
 
   user.data.password = hashPassword({ password: user.data.password });
 
-  const createdUser = await prisma.user.create({
+  return await prisma.user.create({
     data: user.data,
+    select,
   });
-
-  return createdUser;
 }
 
 /**
@@ -94,6 +92,7 @@ export function updateUser(data: UpdateUser): Promise<User> {
 
   const updatedUser = prisma.user.update({
     data: user.data,
+    select,
     where: {
       id: user.data.id,
     },
