@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-
-import type { CreateUser, UpdateUser, User } from '../../../schemas/users';
-import { createUserSchema, updateUserSchema } from '../../../schemas/users';
+import type { CreateUser, UpdateUser, User } from '@repo/db';
+import { createUserSchema, updateUserSchema } from '@repo/db';
 
 const prisma = new PrismaClient();
 

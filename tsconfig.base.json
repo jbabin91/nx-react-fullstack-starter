@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@repo/api": ["libs/api/src/index.ts"],
+      "@repo/db": ["libs/db/src/index.ts"],
       "@repo/ui": ["libs/ui/src/index.ts"]
     }
   },

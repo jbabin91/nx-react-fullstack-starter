@@ -1,6 +1,6 @@
+import { updateUserSchema, userSchema } from '@repo/db';
 import { z } from 'zod';
 
-import { updateUserSchema, userSchema } from '../../../schemas/users';
 import { publicProcedure, router } from '../../trpc';
 import {
   createUser,
