@@ -6,10 +6,8 @@ function getMeHandler({ ctx }: { ctx: Context }) {
   try {
     const user = ctx.user;
     return {
-      data: {
-        user,
-      },
       status: 'success',
+      user,
     };
   } catch (error: any) {
     throw new TRPCError({

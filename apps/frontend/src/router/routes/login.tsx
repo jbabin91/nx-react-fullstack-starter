@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { trpc } from '../../libs';
+import { useAuthStore } from '../../store';
 
 export const Route = new FileRoute('/login')
   .createRoute({
@@ -37,7 +38,7 @@ function LoginComponent() {
   const router = useRouter();
   const { toast } = useToast();
   const search = Route.useSearch();
-  // const { status } = useAuthStore();
+  const { setAuthUser } = useAuthStore();
 
   const { isPending, mutate: loginUser } = trpc.auth.login.useMutation({
     onError: (error) => {
@@ -45,10 +46,12 @@ function LoginComponent() {
     },
     onSuccess: (data) => {
       toast({ description: 'Logged in successfully' });
-      if (search.redirect) {
+      setAuthUser(data.user);
+      if (search.redirect && search.redirect !== '/login') {
         router.history.push(search.redirect);
-        console.log('redirecting to', search.redirect);
         router.navigate({ to: search.redirect });
+      } else {
+        router.navigate({ to: '/' });
       }
     },
   });

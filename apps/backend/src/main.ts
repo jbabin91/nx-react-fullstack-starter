@@ -23,6 +23,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
+    optionsSuccessStatus: 200,
     origin: [origin, `http://localhost:${port}`],
   }),
 );

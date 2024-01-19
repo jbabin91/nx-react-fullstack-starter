@@ -39,11 +39,11 @@ dependencies:
     specifier: ^5.17.18
     version: 5.17.18(@tanstack/react-query@5.17.15)(react@18.2.0)
   '@tanstack/react-router':
-    specifier: ^1.5.9
-    version: 1.5.9(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.6.0
+    version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
   '@tanstack/router-devtools':
-    specifier: ^1.5.9
-    version: 1.5.9(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.6.0
+    version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
   '@trpc/client':
     specifier: 11.0.0-next-beta.193
     version: 11.0.0-next-beta.193
@@ -62,6 +62,9 @@ dependencies:
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
+  cookie:
+    specifier: ^0.6.0
+    version: 0.6.0
   cookie-parser:
     specifier: ^1.4.6
     version: 1.4.6
@@ -77,6 +80,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.2
     version: 9.0.2
+  lodash-es:
+    specifier: ^4.17.21
+    version: 4.17.21
   lucide-react:
     specifier: ^0.312.0
     version: 0.312.0(react@18.2.0)
@@ -167,14 +173,17 @@ devDependencies:
     specifier: ~1.3.104
     version: 1.3.104(@swc/helpers@0.5.3)
   '@tanstack/router-vite-plugin':
-    specifier: ^1.5.9
-    version: 1.5.9
+    specifier: ^1.6.0
+    version: 1.6.0
   '@testing-library/react':
     specifier: 14.1.2
     version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
   '@types/bcryptjs':
     specifier: ^2.4.6
     version: 2.4.6
+  '@types/cookie':
+    specifier: ^0.6.0
+    version: 0.6.0
   '@types/cookie-parser':
     specifier: ^1.4.6
     version: 1.4.6
@@ -187,6 +196,9 @@ devDependencies:
   '@types/jsonwebtoken':
     specifier: ^9.0.5
     version: 9.0.5
+  '@types/lodash-es':
+    specifier: ^4.17.12
+    version: 4.17.12
   '@types/morgan':
     specifier: ^1.9.9
     version: 1.9.9
@@ -4712,8 +4724,8 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@tanstack/history@1.5.9:
-    resolution: {integrity: sha512-GTQJrSI6+L+viUW88S/j6sZau79I3IpafcVLhuT8wo98XORjUS0LF8dZ2jMAwwqwXXDJIXUPs6k5B8OD8w/MfQ==}
+  /@tanstack/history@1.6.0:
+    resolution: {integrity: sha512-C7xeLqdSdXhjAPip3p+XKfXQcaqrrg8+yJJpEcDLXG50ZDo4KI3U7eiPyRhvF+uIf/09cUfEF6s9P6m1HgyuKA==}
     engines: {node: '>=12'}
     dev: false
 
@@ -4745,15 +4757,15 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@tanstack/react-router@1.5.9(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-zDT+4pkM+4dYkq+fGI9u3xq0DOknk6iedlj2IHyZjEAy5T384zEaVVwaoEeRFgpWHRrek9Nll/mvLJBeAreUZQ==}
+  /@tanstack/react-router@1.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-+3v56WJCMyof8VA0w5Evcnt9pzom15wy7WknUeF7QdBmdsKdpFPsIDaI2EGg3P5ilAwoch9A/jxJ8zViI/WDpQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
       '@babel/runtime': 7.23.8
-      '@tanstack/history': 1.5.9
+      '@tanstack/history': 1.6.0
       '@tanstack/react-store': 0.2.1(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/store': 0.1.3
       react: 18.2.0
@@ -4774,33 +4786,33 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/router-devtools@1.5.9(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-doOdKiE9xPqAN4sFfrexj9Vp5f69mkmeG2UUtG/v4oPHetDO04MP2nUv1krDSBFzz92MANyvaoH7C9CkDrGLtQ==}
+  /@tanstack/router-devtools@1.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-xXjbExvx0XdGtiI4QiIR3+kYyjadvUWMMWFf28lz3Yf2uZ5MoRA0h5P4SRxmtrlJsJuQLQSZQs7c8GekrMJIQA==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
       '@babel/runtime': 7.23.8
-      '@tanstack/react-router': 1.5.9(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-router': 1.6.0(react-dom@18.2.0)(react@18.2.0)
       date-fns: 2.30.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/router-generator@1.5.9:
-    resolution: {integrity: sha512-VggQwcK5lqunKOLyN49zhIzgQGdZKB5QVRP1WWY4MR+x5UEjP3zrmRIhp5BKSmlMTxRmYqEgcjBmhQ1MDY8O2g==}
+  /@tanstack/router-generator@1.6.0:
+    resolution: {integrity: sha512-odruPpMtbup0ImY5I5t2aw3jZ38bdZj6snF43xzwgukkCYqxJXXn6uYVrNPRpMpKxceXe/vXk+PtHGMscKMeIA==}
     engines: {node: '>=12'}
     dependencies:
       prettier: 3.2.4
       zod: 3.22.4
     dev: true
 
-  /@tanstack/router-vite-plugin@1.5.9:
-    resolution: {integrity: sha512-miPuRv6+9YGEVQYAQihrLJDItA+coRlteVgFpiHVnFmBe68ayK71HINPEwIPVspIbmv8uFKgRhewymuIrKJHWg==}
+  /@tanstack/router-vite-plugin@1.6.0:
+    resolution: {integrity: sha512-3BypP6ap5wHjtngHwwIYpEgD2Igf31cjfWFYdmTRDMA6ikizulzwShXjse2EjveJzew/0zirqaFsinu5qtgBYQ==}
     engines: {node: '>=12'}
     dependencies:
-      '@tanstack/router-generator': 1.5.9
+      '@tanstack/router-generator': 1.6.0
     dev: true
 
   /@tanstack/store@0.1.3:
@@ -4975,7 +4987,6 @@ packages:
 
   /@types/cookie@0.6.0:
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
-    dev: false
 
   /@types/cors@2.8.17:
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
@@ -4987,13 +4998,13 @@ packages:
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
     dependencies:
       '@types/eslint': 8.56.2
-      '@types/estree': 1.0.5
+      '@types/estree': 0.0.51
     dev: true
 
   /@types/eslint@8.56.2:
     resolution: {integrity: sha512-uQDwm1wFHmbBbCZCqAlq6Do9LYwByNZHWzXppSnay9SuwJ+VRbjkbLABer54kcPnMSlG6Fdiy2yaFXm/z9Z5gw==}
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 0.0.51
       '@types/json-schema': 7.0.15
     dev: true
 
@@ -5084,6 +5095,16 @@ packages:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
       '@types/node': 20.11.5
+    dev: true
+
+  /@types/lodash-es@4.17.12:
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+    dependencies:
+      '@types/lodash': 4.14.202
+    dev: true
+
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
     dev: true
 
   /@types/mime@1.3.5:
@@ -6427,7 +6448,7 @@ packages:
   /builtins@5.0.1:
     resolution: {integrity: sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==}
     dependencies:
-      semver: 7.5.4
+      semver: 7.5.3
     dev: true
 
   /bytes@3.0.0:
@@ -7314,7 +7335,7 @@ packages:
     resolution: {integrity: sha512-QHTXI/sZQmko1cbDoNAa3mJ5qhWUUNAq3vR0/YiD379fWQrcfuoX1+HW2S0MTt7XmoPLapdaDKUtelUSPic7hQ==}
     engines: {node: '>=10.13.0'}
     dependencies:
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
       tapable: 2.2.1
     dev: true
 
@@ -8476,7 +8497,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.1.2
+      minimatch: 3.0.5
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true
@@ -9744,7 +9765,7 @@ packages:
       acorn: 8.11.3
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      semver: 7.5.4
+      semver: 7.5.3
     dev: true
 
   /jsonc-parser@3.2.0:
@@ -9978,6 +9999,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
@@ -10409,7 +10434,7 @@ packages:
     dependencies:
       hosted-git-info: 7.0.1
       proc-log: 3.0.0
-      semver: 7.5.4
+      semver: 7.5.3
       validate-npm-package-name: 5.0.0
     dev: true
 
@@ -13044,7 +13069,7 @@ packages:
     engines: {node: '>=10.13.0'}
     dependencies:
       glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
+      graceful-fs: 4.2.10
     dev: true
 
   /wbuf@1.7.3:

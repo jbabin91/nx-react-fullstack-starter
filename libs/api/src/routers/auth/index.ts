@@ -1,4 +1,4 @@
-import { createUserSchema, loginUserSchema } from '@repo/db';
+import { loginUserSchema, registerUserSchema } from '@repo/db';
 
 import {
   loginHandler,
@@ -7,10 +7,10 @@ import {
   registerHandler,
 } from '../../controllers/auth.controller';
 import { getMeHandler } from '../../controllers/user.controller';
-import { publicProcedure, router } from '../../trpc';
+import { isAuthorizedProcedure, publicProcedure, router } from '../../trpc';
 
 export const authRouter = router({
-  getMe: publicProcedure.query(({ ctx }) => getMeHandler({ ctx })),
+  getMe: isAuthorizedProcedure.query(({ ctx }) => getMeHandler({ ctx })),
   login: publicProcedure
     .input(loginUserSchema)
     .mutation(async ({ input, ctx }) => await loginHandler({ ctx, input })),
@@ -19,6 +19,6 @@ export const authRouter = router({
     refreshAccessTokenHandler({ ctx }),
   ),
   register: publicProcedure
-    .input(createUserSchema)
+    .input(registerUserSchema)
     .mutation(async ({ input }) => await registerHandler({ input })),
 });

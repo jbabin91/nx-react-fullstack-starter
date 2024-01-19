@@ -1,22 +1,13 @@
 import { QueryDevtools } from '@repo/ui';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { getFetch, loggerLink } from '@trpc/client';
 import { httpBatchLink } from '@trpc/react-query';
 import { useState } from 'react';
 
-import { trpc } from '../libs';
+import { queryClient, trpc } from '../libs';
 
 export function QueryProvider({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 5 * 1000,
-          },
-        },
-      }),
-  );
+  const [client] = useState(() => queryClient);
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -36,8 +27,8 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
+    <trpc.Provider client={trpcClient} queryClient={client}>
+      <QueryClientProvider client={client}>
         {children}
         <QueryDevtools />
       </QueryClientProvider>

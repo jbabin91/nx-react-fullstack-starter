@@ -1,6 +1,6 @@
 import { getCookie } from './getCookie';
 
-export function isAuthenticated(): string | null {
+export function isAuthenticated(): boolean {
   const loggedIn = getCookie('logged_in');
-  return loggedIn;
+  return Boolean(loggedIn);
 }
