@@ -10,7 +10,7 @@ function ProfilePage() {
   const { authUser: user } = useAuthStore();
 
   return (
-    <div className="p-2 space-y-4">
+    <div className="space-y-4 p-2">
       <div>
         <h3 className="text-xl font-semibold">Profile</h3>
         <p className="text-base font-normal">

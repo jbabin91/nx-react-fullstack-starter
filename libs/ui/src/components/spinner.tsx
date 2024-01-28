@@ -9,10 +9,10 @@ const spinnerVariants = cva('mr-2 animate-spin', {
   },
   variants: {
     size: {
-      default: 'h-4 w-4',
-      lg: 'h-8 w-8',
+      default: 'size-4',
+      lg: 'size-8',
       sm: 'h-2 w-4',
-      xl: 'h-16 w-16',
+      xl: 'size-16',
     },
   },
 });
