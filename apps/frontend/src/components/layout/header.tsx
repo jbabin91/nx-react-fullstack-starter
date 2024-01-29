@@ -30,10 +30,10 @@ export function Header() {
 
   return (
     <header className="h-20 bg-zinc-800">
-      <nav className="h-full flex justify-between container items-center">
+      <nav className="container flex h-full items-center justify-between">
         <div>
           <Link
-            className="bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text text-2xl font-semibold"
+            className="inline-block bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 bg-clip-text text-2xl font-semibold text-transparent"
             to="/"
           >
             Fullstack Starter

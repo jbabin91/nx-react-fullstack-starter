@@ -87,7 +87,7 @@ function LoginComponent() {
   }
 
   return (
-    <section className="py-12 grid place-items-center">
+    <section className="grid place-items-center py-12">
       <Card className="w-[350px] bg-zinc-900">
         <CardHeader>
           <CardTitle>Login</CardTitle>
@@ -95,7 +95,7 @@ function LoginComponent() {
         <CardContent>
           <Form {...form}>
             <form
-              className="space-y-4 max-w-sm"
+              className="max-w-sm space-y-4"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <FormField

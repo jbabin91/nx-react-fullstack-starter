@@ -1,7 +1,11 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "extends": ["plugin:unicorn/recommended", "prettier"],
+  "extends": [
+    "plugin:unicorn/recommended",
+    "plugin:tailwindcss/recommended",
+    "prettier"
+  ],
   "plugins": ["@nx", "import", "simple-import-sort", "sort-keys-fix"],
   "rules": {
     "import/first": "error",
@@ -10,28 +14,8 @@
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "sort-keys-fix/sort-keys-fix": "error",
-    "unicorn/prevent-abbreviations": "off",
-    "unicorn/no-null": "off",
-    "unicorn/filename-case": [
-      "error",
-      {
-        "cases": {
-          "camelCase": true,
-          "pascalCase": true,
-          "kebabCase": true
-        }
-      }
-    ]
-  },
-  "extends": ["plugin:unicorn/recommended", "prettier"],
-  "plugins": ["@nx", "import", "simple-import-sort", "sort-keys-fix"],
-  "rules": {
-    "import/first": "error",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error",
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "sort-keys-fix/sort-keys-fix": "error",
+    "tailwindcss/classnames-order": "off",
+    "tailwindcss/no-custom-classname": "off",
     "unicorn/prevent-abbreviations": "off",
     "unicorn/no-null": "off",
     "unicorn/filename-case": [
