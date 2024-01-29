@@ -1,72 +1,28 @@
-import type { TypeOf } from 'zod';
-import { array, date, object, string, z } from 'zod';
+import { z } from 'zod';
 
-export const userSchema = object({
-  id: string(),
-  name: string(),
-  email: string().email(),
-  password: string().optional(),
+export const createUserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+});
+export type CreateUser = z.infer<typeof createUserSchema>;
+
+export const userSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string().optional(),
   role: z.enum(['ADMIN', 'USER']),
-  createdAt: date(),
-  updatedAt: date(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
-export type User = TypeOf<typeof userSchema>;
+export type User = z.infer<typeof userSchema>;
+export type UserResponse = Omit<User, 'password'>;
 
-export const usersSchema = array(userSchema);
-export type Users = TypeOf<typeof usersSchema>;
-
-export const createUserSchema = object({
-  name: string({ required_error: 'Name is required' }),
-  email: string({
-    required_error: 'Email is required',
-  }).email({
-    message: 'Invalid email',
-  }),
-  password: string({
-    required_error: 'Password is required',
-  })
-    .min(8, {
-      message: 'Password must be at least 8 characters long',
-    })
-    .max(32, {
-      message: 'Password must be less than 32 characters long',
-    }),
-});
-export type CreateUser = TypeOf<typeof createUserSchema>;
-
-export const updateUserSchema = object({
-  id: string(),
-  name: string(),
-  email: string().email(),
+export const updateUserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
   role: z.enum(['ADMIN', 'USER']),
 });
-export type UpdateUser = TypeOf<typeof updateUserSchema>;
-
-export const loginUserSchema = object({
-  email: string()
-    .min(1, {
-      message: 'Email is required',
-    })
-    .email('Email is invalid'),
-  password: string()
-    .min(1, {
-      message: 'Password is required',
-    })
-    .min(8, 'Password must be at least 8 characters')
-    .max(32, 'Password must be less than 32 characters'),
-});
-export type LoginInput = TypeOf<typeof loginUserSchema>;
-
-export const registerUserSchema = object({
-  name: string().min(1, 'Full name is required').max(100),
-  email: string().min(1, 'Email is required').email('Email is invalid'),
-  password: string()
-    .min(1, 'Password is required')
-    .min(8, 'Password must be at least 8 characters')
-    .max(32, 'Password must be less than 32 characters'),
-  passwordConfirm: string().min(1, 'Please confirm your password'),
-}).refine((data) => data.password === data.passwordConfirm, {
-  path: ['passwordConfirm'],
-  message: 'Passwords do not match',
-});
-export type RegisterInput = TypeOf<typeof registerUserSchema>;
+export type UpdateUser = z.infer<typeof updateUserSchema>;

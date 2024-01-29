@@ -7,7 +7,7 @@ import { useAuthStore } from '../../store';
 
 export function Header() {
   const router = useRouter();
-  const { authUser: user } = useAuthStore();
+  const { authUser: user, setAuthUser } = useAuthStore();
 
   const queryClient = useQueryClient();
   const { mutate: logoutUser } = trpc.auth.logout.useMutation({
@@ -15,13 +15,12 @@ export function Header() {
       queryClient.clear();
       router.invalidate();
       router.navigate({ to: '/login' });
-      // document.location.href = '/login';
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
+      setAuthUser(null);
       queryClient.clear();
       router.invalidate();
       router.navigate({ to: '/login' });
-      // document.location.href = '/login';
     },
   });
 

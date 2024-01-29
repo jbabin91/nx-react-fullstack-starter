@@ -1,5 +1,5 @@
-import type { User } from '@prisma/client';
 import { verifyJwt } from '@repo/auth';
+import type { UserResponse } from '@repo/db';
 import { TRPCError } from '@trpc/server';
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 
@@ -9,9 +9,10 @@ import { findUserById } from '../services/user.db';
 async function deserializeUser({
   req,
   res,
-}: Omit<CreateExpressContextOptions, 'info'>): Promise<
-  Omit<CreateExpressContextOptions, 'info'> & {
-    user: Omit<User, 'password'> | null;
+  info,
+}: CreateExpressContextOptions): Promise<
+  CreateExpressContextOptions & {
+    user: UserResponse | null;
   }
 > {
   try {
@@ -27,6 +28,7 @@ async function deserializeUser({
     }
 
     const notAuthenticated = {
+      info,
       req,
       res,
       user: null,
@@ -60,6 +62,7 @@ async function deserializeUser({
     }
 
     return {
+      info,
       req,
       res,
       user,

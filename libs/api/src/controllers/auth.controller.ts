@@ -7,10 +7,11 @@ import {
   signTokens,
   verifyJwt,
 } from '@repo/auth';
-import type { CreateUser, LoginInput } from '@repo/db';
+import type { LoginInput, RegisterInput, UserResponse } from '@repo/db';
 import { TRPCError } from '@trpc/server';
 import type { CookieOptions } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { omit } from 'lodash-es';
 
 import { env } from '../config';
 import { prisma } from '../lib/prisma-client';
@@ -41,12 +42,14 @@ const refreshTokenCookieOptions = {
 };
 
 // Register User
-async function registerHandler({ input }: { input: CreateUser }) {
+async function registerHandler({ input }: { input: RegisterInput }) {
   try {
     const user = await createUser({
-      email: input.email,
-      name: input.name,
-      password: input.password,
+      data: {
+        email: input.email,
+        name: input.name,
+        password: input.password,
+      },
     });
 
     return {
@@ -79,7 +82,7 @@ async function loginHandler({
 }: {
   input: LoginInput;
   ctx: Context;
-}) {
+}): Promise<{ access_token: string; status: string; user: UserResponse }> {
   try {
     const user = await findUserByEmail({ email: input.email });
 
@@ -114,6 +117,7 @@ async function loginHandler({
     return {
       access_token,
       status: 'success',
+      user: omit(user, ['password']),
     };
   } catch (error: any) {
     throw new TRPCError({
@@ -262,38 +266,6 @@ export async function loginUser({
     refreshToken,
     userId: existingUser.id,
   });
-
-  return {
-    accessToken,
-    refreshToken,
-  };
-}
-
-export async function registerUser({
-  data,
-}: {
-  data: CreateUser;
-}): Promise<{ accessToken: string; refreshToken: string }> {
-  const { email, password } = data;
-
-  if (!email || !password) {
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-    });
-  }
-
-  const existingUser = await findUserByEmail({ email });
-
-  if (existingUser) {
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-    });
-  }
-
-  const user = await createUser(data);
-  const jti = createId();
-  const { accessToken, refreshToken } = generateTokens(user, jti);
-  await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
 
   return {
     accessToken,

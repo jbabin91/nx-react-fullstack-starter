@@ -24,32 +24,11 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "migrate-save": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "libs/db",
-        "command": "npx prisma migrate dev --schema ./src/prisma/schema.prisma"
-      }
-    },
-    "migrate-up": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "libs/db",
-        "command": "npx prisma db push --schema ./src/prisma/schema.prisma"
-      }
-    },
-    "gen-client": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "libs/db",
-        "command": "npx prisma generate --schema ./src/prisma/schema.prisma"
-      }
-    },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "libs/db",
-        "command": "npx prisma studio --schema ./src/prisma/schema.prisma"
+        "command": "npx prisma studio --schema ./src/prisma/schema.prisma --browser none"
       }
     }
   },
