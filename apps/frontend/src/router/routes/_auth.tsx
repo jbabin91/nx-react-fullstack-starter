@@ -1,8 +1,8 @@
-import { FileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 
 import { isAuthenticated } from '../../utils';
 
-export const Route = new FileRoute('/_auth').createRoute({
+export const Route = createFileRoute('/_auth')({
   // Before loading, authenticate the user via our auth context
   // This will also happen during prefetching (e.g. hovering over links, etc)
   beforeLoad: ({ location }) => {

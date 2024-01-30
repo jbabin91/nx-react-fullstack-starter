@@ -1,8 +1,8 @@
-import { FileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { useAuthStore } from '../../store';
 
-export const Route = new FileRoute('/_auth/profile').createRoute({
+export const Route = createFileRoute('/_auth/profile')({
   component: ProfilePage,
 });
 

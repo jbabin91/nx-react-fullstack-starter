@@ -15,14 +15,14 @@ import {
   Input,
   useToast,
 } from '@repo/ui';
-import { FileRoute, Link, useRouter } from '@tanstack/react-router';
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import { trpc } from '../../libs';
 
-export const Route = new FileRoute('/register').createRoute({
+export const Route = createFileRoute('/register')({
   component: RegisterComponent,
 });
 

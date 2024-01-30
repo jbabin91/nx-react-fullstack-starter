@@ -16,7 +16,7 @@ import {
   Input,
   useToast,
 } from '@repo/ui';
-import { FileRoute, Link, useRouter } from '@tanstack/react-router';
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -24,15 +24,13 @@ import { z } from 'zod';
 import { trpc } from '../../libs';
 import { useAuthStore } from '../../store';
 
-export const Route = new FileRoute('/login')
-  .createRoute({
-    validateSearch: z.object({
-      redirect: z.string().optional(),
-    }),
-  })
-  .update({
-    component: LoginComponent,
-  });
+export const Route = createFileRoute('/login')({
+  validateSearch: z.object({
+    redirect: z.string().optional(),
+  }),
+}).update({
+  component: LoginComponent,
+});
 
 function LoginComponent() {
   const router = useRouter();
